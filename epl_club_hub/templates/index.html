@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Hub - Players</title>
+  <style>
+    :root {
+      --bg: #f6f7fb;
+      --surface: #ffffff;
+      --surface-2: #f1f3f9;
+      --text: #111827;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --primary: #5b21b6;
+      --primary-2: #7c3aed;
+      --accent: #ec4899;
+      --shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+      --radius-xl: 24px;
+      --radius-lg: 18px;
+      --radius-md: 14px;
+      --max: 1280px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      background: linear-gradient(135deg, #2e1065 0%, #5b21b6 55%, #db2777 100%);
+      color: white;
+      padding: 18px 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .topbar-inner {
+      max-width: var(--max);
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      font-size: 1.25rem;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-badge {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.16);
+      backdrop-filter: blur(10px);
+      font-size: 1.1rem;
+    }
+
+    .nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .nav a {
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.12);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      max-width: var(--max);
+      margin: 28px auto 0;
+      padding: 0 24px;
+    }
+
+    .hero-card {
+      background: linear-gradient(135deg, #ffffff 0%, #f7f2ff 100%);
+      border: 1px solid #efe7ff;
+      border-radius: 32px;
+      padding: 28px;
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1.05;
+      letter-spacing: -1px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 760px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      align-self: end;
+    }
+
+    .stat-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      min-height: 102px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .section {
+      max-width: var(--max);
+      margin: 22px auto 40px;
+      padding: 0 24px;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 0.7fr) auto;
+      gap: 12px;
+      background: white;
+      padding: 16px;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+    }
+
+    .input, .select {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      outline: none;
+    }
+
+    .input:focus, .select:focus {
+      border-color: var(--primary-2);
+      background: white;
+    }
+
+    .button {
+      border: none;
+      border-radius: 14px;
+      padding: 14px 18px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .button-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      color: white;
+    }
+
+    .players-header {
+      margin: 24px 0 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .players-header h2 {
+      margin: 0;
+      font-size: 1.3rem;
+      letter-spacing: -0.4px;
+    }
+
+    .players-count {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .players-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .player-card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .player-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 40px rgba(17, 24, 39, 0.12);
+    }
+
+    .card-top {
+      position: relative;
+      min-height: 220px;
+      background: linear-gradient(135deg, #ede9fe 0%, #fae8ff 100%);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      padding: 14px;
+    }
+
+    .shirt-number {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.9);
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+      box-shadow: 0 8px 20px rgba(91, 33, 182, 0.12);
+    }
+
+    .club-chip {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(17,24,39,0.75);
+      color: white;
+      font-size: 0.78rem;
+      font-weight: 600;
+      backdrop-filter: blur(8px);
+    }
+
+    .player-image {
+      width: 150px;
+      height: 190px;
+      object-fit: cover;
+      border-radius: 18px;
+      background: white;
+      border: 1px solid rgba(255,255,255,0.8);
+    }
+
+    .card-body {
+      padding: 16px;
+    }
+
+    .position {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #374151;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .player-name {
+      margin: 0 0 6px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.2px;
+    }
+
+    .player-meta {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .mini-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .mini-stat {
+      background: var(--surface-2);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .mini-stat-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .mini-stat-value {
+      font-weight: 800;
+      font-size: 1rem;
+    }
+
+    .detail-link {
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 14px;
+      background: #111827;
+      color: white;
+      font-weight: 700;
+    }
+
+    .footer-space {
+      height: 24px;
+    }
+
+    @media (max-width: 1120px) {
+      .players-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .toolbar {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-card {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .topbar-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav {
+        justify-content: center;
+      }
+
+      .players-grid {
+        grid-template-columns: repeat(1, minmax(0, 1fr));
+      }
+
+      .hero,
+      .section {
+        padding: 0 16px;
+      }
+
+      .hero-card,
+      .toolbar {
+        padding: 18px;
+        border-radius: 22px;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-badge">⚽</div>
+        <span>Club Hub</span>
+      </div>
+
+      <nav class="nav">
+        <a href="#">홈</a>
+        <a href="#">구단</a>
+        <a href="#">선수</a>
+        <a href="#">순위</a>
+        {% if is_admin %}
+        <a href="/admin">관리자</a>
+        {% else %}
+        <a href="/admin/login">관리자</a>
+        {% endif %}
+        
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-card">
+      <div>
+        <h1>Premier League Players</h1>
+        <p>
+          EPL 20개 구단 선수들을 한눈에 볼 수 있는 메인 화면이야.
+          지금은 UI 목업 버전이고, 나중에 DB 연결하면 검색/필터/상세 페이지까지 바로 이어질 수 있게 구조를 잡아둔 상태야.
+        </p>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat-box">
+          <div class="stat-label">Clubs</div>
+          <div class="stat-value">{{ clubs_count }}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Players</div>
+          <div class="stat-value">{{ players_count }}</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Season</div>
+          <div class="stat-value">25/26</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main class="section">
+    <form class="toolbar" method="get" action="/">
+  <input
+    class="input"
+    type="text"
+    name="search"
+    placeholder="선수 이름을 검색해보세요"
+    value="{{ search }}"
+  />
+
+  <select class="select" name="club">
+    <option value="all" {% if selected_club == "all" %}selected{% endif %}>모든 구단</option>
+    {% for club_name in club_names %}
+    <option value="{{ club_name }}" {% if selected_club == club_name %}selected{% endif %}>
+      {{ club_name }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <select class="select" name="position">
+    <option value="all" {% if selected_position == "all" %}selected{% endif %}>모든 포지션</option>
+    {% for position_item in positions %}
+    <option value="{{ position_item }}" {% if selected_position == position_item %}selected{% endif %}>
+      {{ position_item }}
+    </option>
+    {% endfor %}
+  </select>
+
+  <select class="select" name="sort">
+    <option value="name" {% if selected_sort == "name" %}selected{% endif %}>이름순</option>
+    <option value="number" {% if selected_sort == "number" %}selected{% endif %}>등번호순</option>
+    <option value="goals" {% if selected_sort == "goals" %}selected{% endif %}>득점순</option>
+    <option value="assists" {% if selected_sort == "assists" %}selected{% endif %}>도움순</option>
+  </select>
+
+  <button class="button button-primary" type="submit">필터 적용</button>
+</form>
+
+    <div class="players-header">
+      <h2>전체 선수 목록</h2>
+      <div class="players-count">
+  필터 결과 {{ filtered_players_count }}명 / 전체 {{ players_count }}명
+</div>
+    </div>
+
+    <div class="players-grid">
+  {% for player in players %}
+  <article class="player-card">
+    <div class="card-top">
+      <div class="shirt-number">{{ player.number }}</div>
+      <div class="club-chip">{{ player.club_name }}</div>
+
+      <img
+        class="player-image"
+        src="{{ player.image_url if player.image_url else 'https://placehold.co/300x380?text=No+Image' }}"
+        alt="{{ player.name }}"
+      />
+    </div>
+
+    <div class="card-body">
+      <span class="position">{{ player.position }}</span>
+      <h3 class="player-name">{{ player.name }}</h3>
+      <p class="player-meta">{{ player.nationality }} · {{ player.age }}세</p>
+
+      <div class="mini-stats">
+        <div class="mini-stat">
+          <div class="mini-stat-label">경기</div>
+          <div class="mini-stat-value">{{ player.appearances }}</div>
+        </div>
+
+        <div class="mini-stat">
+          <div class="mini-stat-label">골</div>
+          <div class="mini-stat-value">{{ player.goals }}</div>
+        </div>
+
+        <div class="mini-stat">
+          <div class="mini-stat-label">도움</div>
+          <div class="mini-stat-value">{{ player.assists }}</div>
+        </div>
+      </div>
+
+      <a class="detail-link" href="/players/{{ player._id }}">선수 상세 보기</a>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+
+    <div class="footer-space"></div>
+  </main>
+</body>
+</html>

@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}선수 추가 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>선수 추가</h2>
+        <p class="form-desc">새 선수를 등록하면 해당 구단 상세 페이지에서 바로 볼 수 있어.</p>
+
+        <form method="post" action="/admin/players/new" class="player-form">
+            <div class="form-group">
+                <label for="club_id">소속 구단</label>
+                <select id="club_id" name="club_id" required>
+                    <option value="">구단 선택</option>
+                    {% for club in clubs %}
+                    <option value="{{ club._id }}">{{ club.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="number">등번호</label>
+                    <input type="number" id="number" name="number" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="position">포지션</label>
+                    <input type="text" id="position" name="position" placeholder="예: ST, CM, CB" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nationality">국적</label>
+                    <input type="text" id="nationality" name="nationality" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">나이</label>
+                    <input type="number" id="age" name="age" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="appearances">출전</label>
+                    <input type="number" id="appearances" name="appearances" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="goals">골</label>
+                    <input type="number" id="goals" name="goals" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="assists">도움</label>
+                    <input type="number" id="assists" name="assists" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="clean_sheets">클린시트</label>
+                    <input type="number" id="clean_sheets" name="clean_sheets" value="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">이미지 URL</label>
+                    <input type="text" id="image_url" name="image_url" placeholder="없으면 비워둬도 됨">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">선수 저장</button>
+                <a href="/" class="cancel-btn">메인으로</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

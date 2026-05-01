@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}구단 관리 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>구단 관리</h2>
+        <p class="form-desc">구단 로고, 역사, 유니폼 이미지 등을 수정할 수 있어.</p>
+
+        <div class="form-actions" style="margin-bottom: 20px;">
+            <a href="/admin" class="cancel-btn">대시보드로</a>
+        </div>
+
+        <div class="player-list">
+            {% for club in clubs %}
+            <div class="player-card">
+                <h4>{{ club.name }}</h4>
+                <p>약칭: {{ club.short_name }}</p>
+                <p>감독: {{ club.manager }}</p>
+                <p>홈구장: {{ club.stadium }}</p>
+
+                <div class="form-actions" style="margin-top: 12px;">
+                    <a href="/admin/clubs/{{ club._id }}/edit" class="submit-btn">수정</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

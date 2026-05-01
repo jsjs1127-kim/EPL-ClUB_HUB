@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}승인 대기 뉴스 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>승인 대기 뉴스</h2>
+        <p class="form-desc">유저가 제보한 뉴스 중 아직 승인되지 않은 글들이야.</p>
+
+        <div class="form-actions" style="margin-bottom: 20px;">
+            <a href="/admin" class="cancel-btn">대시보드로</a>
+        </div>
+
+        {% if pending_items %}
+            <div class="player-list">
+                {% for item in pending_items %}
+                <div class="player-card">
+                    <h4>{{ item.title }}</h4>
+                    <p><strong>카테고리:</strong> {{ item.category }}</p>
+                    <p><strong>작성자:</strong> {{ item.author_username if item.author_username else "알 수 없음" }}</p>
+                    <p><strong>출처명:</strong> {{ item.source_name }}</p>
+                    <p><strong>출처링크:</strong> {{ item.source_url }}</p>
+                    <p><strong>작성일:</strong> {{ item.created_at }}</p>
+                    <p><strong>상태:</strong> {{ item.status }}</p>
+                    <p style="margin-top: 12px;"><strong>요약:</strong> {{ item.summary }}</p>
+                    <p style="margin-top: 12px;"><strong>본문:</strong><br>{{ item.content }}</p>
+
+                    <div class="form-actions" style="margin-top: 16px;">
+                        <form method="post" action="/admin/news/{{ item.id }}/approve">
+                            <button type="submit" class="submit-btn">승인</button>
+                        </form>
+
+                        <form method="post" action="/admin/news/{{ item.id }}/reject">
+                            <button type="submit" class="delete-btn">반려</button>
+                        </form>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>현재 승인 대기 중인 뉴스가 없어.</p>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ club.name }} | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="club-detail">
+    <div class="club-info-box">
+        <h2>{{ club.name }}</h2>
+        <p><strong>약칭:</strong> {{ club.short_name }}</p>
+        <p><strong>감독:</strong> {{ club.manager }}</p>
+        <p><strong>홈구장:</strong> {{ club.stadium }}</p>
+        <p><strong>창단연도:</strong> {{ club.founded_year }}</p>
+        <p><strong>소개:</strong> {{ club.description }}</p>
+    </div>
+</section>
+
+<section class="players-section">
+{% if is_admin %}
+<div style="margin-bottom: 16px;">
+    <a href="/admin/players/new" class="back-link">이 구단 선수 추가</a>
+</div>
+
+{% endif %}
+    <h3>선수 목록</h3>
+
+    {% if players %}
+        <div class="player-list">
+            {% for player in players %}
+                <a href="/players/{{ player._id }}" class="player-card">
+                    <h4>{{ player.name }}</h4>
+                    <p>등번호: {{ player.number }}</p>
+                    <p>포지션: {{ player.position }}</p>
+                    <p>국적: {{ player.nationality }}</p>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>아직 등록된 선수가 없습니다.</p>
+    {% endif %}
+</section>
+{% endblock %}

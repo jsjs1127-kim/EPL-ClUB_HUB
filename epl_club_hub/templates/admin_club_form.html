@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block title %}구단 수정 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>구단 정보 수정</h2>
+        <p class="form-desc">구단 기본 정보, 역사, 로고, 유니폼 이미지를 입력할 수 있어.</p>
+
+        <form method="post" action="/admin/clubs/{{ club._id }}/edit" class="player-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">구단명</label>
+                    <input type="text" id="name" name="name" value="{{ club.name if club.name else '' }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="short_name">약칭</label>
+                    <input type="text" id="short_name" name="short_name" value="{{ club.short_name if club.short_name else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="manager">감독</label>
+                    <input type="text" id="manager" name="manager" value="{{ club.manager if club.manager else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="stadium">홈구장</label>
+                    <input type="text" id="stadium" name="stadium" value="{{ club.stadium if club.stadium else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="founded_year">창단연도</label>
+                    <input type="text" id="founded_year" name="founded_year" value="{{ club.founded_year if club.founded_year else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="logo_url">로고 이미지 URL</label>
+                    <input type="text" id="logo_url" name="logo_url" value="{{ club.logo_url if club.logo_url else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="home_kit_url">홈 유니폼 URL</label>
+                    <input type="text" id="home_kit_url" name="home_kit_url" value="{{ club.home_kit_url if club.home_kit_url else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="away_kit_url">어웨이 유니폼 URL</label>
+                    <input type="text" id="away_kit_url" name="away_kit_url" value="{{ club.away_kit_url if club.away_kit_url else '' }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="third_kit_url">써드 유니폼 URL</label>
+                    <input type="text" id="third_kit_url" name="third_kit_url" value="{{ club.third_kit_url if club.third_kit_url else '' }}">
+                </div>
+            </div>
+
+            <div class="form-group" style="margin-top: 18px;">
+                <label for="description">구단 소개</label>
+                <textarea id="description" name="description" rows="5" style="padding: 14px; border: 1px solid #d1d5db; border-radius: 12px;">{{ club.description if club.description else '' }}</textarea>
+            </div>
+
+            <div class="form-group" style="margin-top: 18px;">
+                <label for="history">구단 역사</label>
+                <textarea id="history" name="history" rows="8" style="padding: 14px; border: 1px solid #d1d5db; border-radius: 12px;">{{ club.history if club.history else '' }}</textarea>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="submit" class="submit-btn">저장</button>
+                <a href="/admin/clubs" class="cancel-btn">목록으로</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

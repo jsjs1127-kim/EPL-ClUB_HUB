@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}관리자 대시보드 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>관리자 대시보드</h2>
+        <p class="form-desc">{{ admin_username }} 님, 관리자 화면이야.</p>
+
+        <div class="player-stats-grid" style="margin-bottom: 24px;">
+            <div class="player-stat-box">
+                <div class="player-stat-label">구단 수</div>
+                <div class="player-stat-value">{{ clubs_count }}</div>
+            </div>
+            <div class="player-stat-box">
+                <div class="player-stat-label">선수 수</div>
+                <div class="player-stat-value">{{ players_count }}</div>
+            </div>
+        </div>
+
+        <div class="form-actions" style="margin-bottom: 24px;">
+    <a href="/admin/players/new" class="submit-btn">선수 추가</a>
+    <a href="/admin/clubs" class="submit-btn">구단 관리</a>
+    <a href="/admin/news/pending" class="submit-btn">뉴스 승인</a>
+    <a href="/admin/logout" class="cancel-btn">로그아웃</a>
+</div>
+
+        <h3>최근 등록/수정 확인용 선수 목록</h3>
+
+        <div class="player-list">
+            {% for player in recent_players %}
+            <a href="/players/{{ player._id }}" class="player-card">
+                <h4>{{ player.name }}</h4>
+                <p>소속: {{ player.club_name }}</p>
+                <p>등번호: {{ player.number }}</p>
+                <p>포지션: {{ player.position }}</p>
+            </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

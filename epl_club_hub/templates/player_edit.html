@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}선수 수정 | EPL Club Hub{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="form-card">
+        <h2>선수 수정</h2>
+        <p class="form-desc">기존 선수 정보를 수정할 수 있어.</p>
+
+        <form method="post" action="/admin/players/{{ player._id }}/edit" class="player-form">
+            <div class="form-group">
+                <label for="club_id">소속 구단</label>
+                <select id="club_id" name="club_id" required>
+                    {% for club in clubs %}
+                    <option value="{{ club._id }}" {% if club._id == player.club_id %}selected{% endif %}>
+                        {{ club.name }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" id="name" name="name" value="{{ player.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="number">등번호</label>
+                    <input type="number" id="number" name="number" value="{{ player.number }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="position">포지션</label>
+                    <input type="text" id="position" name="position" value="{{ player.position }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nationality">국적</label>
+                    <input type="text" id="nationality" name="nationality" value="{{ player.nationality }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="age">나이</label>
+                    <input type="number" id="age" name="age" value="{{ player.age }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="appearances">출전</label>
+                    <input type="number" id="appearances" name="appearances" value="{{ player.appearances }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="goals">골</label>
+                    <input type="number" id="goals" name="goals" value="{{ player.goals }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="assists">도움</label>
+                    <input type="number" id="assists" name="assists" value="{{ player.assists }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="clean_sheets">클린시트</label>
+                    <input type="number" id="clean_sheets" name="clean_sheets" value="{{ player.clean_sheets }}">
+                </div>
+
+                <div class="form-group">
+                    <label for="image_url">이미지 URL</label>
+                    <input type="text" id="image_url" name="image_url" value="{{ player.image_url }}">
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="submit-btn">수정 저장</button>
+                <a href="/players/{{ player._id }}" class="cancel-btn">취소</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
